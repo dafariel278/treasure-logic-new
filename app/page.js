@@ -2,14 +2,131 @@
 
 import { useState, useEffect, useRef } from "react";
 
-const responses = [
-  "Clarity precedes control.",
-  "Structure defines power.",
-  "Leverage is silent strength.",
-  "Remove noise. Keep direction.",
-  "Discipline is engineered, not felt.",
-  "Most move fast. Few move precise."
+/* ============================= */
+/* ===== AI KNOWLEDGE BASE ===== */
+/* ============================= */
+
+const greetingReplies = [
+  "Hello. What outcome are you trying to achieve?",
+  "Hi. Define the problem clearly.",
+  "Hey. What are you optimizing for?",
+  "Greetings. State your objective."
 ];
+
+const knowledgeBase = [
+  {
+    keywords: ["business", "start", "company"],
+    answer:
+      "Start with a defined problem and a specific audience. Validate demand before scaling. Revenue follows relevance."
+  },
+  {
+    keywords: ["money", "wealth", "rich"],
+    answer:
+      "Wealth is built through ownership and leverage. Skills generate income. Assets generate scale."
+  },
+  {
+    keywords: ["focus", "distract"],
+    answer:
+      "Focus improves when alternatives decrease. Reduce environmental noise before attempting mental control."
+  },
+  {
+    keywords: ["discipline", "consistent"],
+    answer:
+      "Discipline strengthens when negotiation ends. Set rules. Execute regardless of mood."
+  },
+  {
+    keywords: ["confidence"],
+    answer:
+      "Confidence is evidence-based. Increase competence. Track measurable progress."
+  },
+  {
+    keywords: ["fear"],
+    answer:
+      "Fear usually signals uncertainty. Reduce uncertainty through preparation and clarity."
+  },
+  {
+    keywords: ["respect"],
+    answer:
+      "Respect follows consistency and delivery. Speak less. Demonstrate more."
+  },
+  {
+    keywords: ["strategy", "strategic"],
+    answer:
+      "Strategic thinking prioritizes positioning before action. Movement without positioning wastes energy."
+  },
+  {
+    keywords: ["overthink"],
+    answer:
+      "Define decision criteria in advance. Act once thresholds are met. Refine after feedback."
+  },
+  {
+    keywords: ["lost", "direction"],
+    answer:
+      "Clarity often emerges from elimination. Define what you refuse to tolerate."
+  },
+  {
+    keywords: ["productive", "productivity"],
+    answer:
+      "Identify the one task that shifts your trajectory. Complete it before lower-impact work."
+  },
+  {
+    keywords: ["motivation"],
+    answer:
+      "Motivation fluctuates. Systems endure. Build routines that function without emotion."
+  },
+  {
+    keywords: ["leader", "leadership"],
+    answer:
+      "Leadership requires decision stability and emotional control. Volatility weakens authority."
+  },
+  {
+    keywords: ["risk"],
+    answer:
+      "Quantify downside. If loss is survivable and upside asymmetric, the risk may be rational."
+  },
+  {
+    keywords: ["time"],
+    answer:
+      "Audit your time allocation. If effort does not compound, restructure your schedule."
+  },
+  {
+    keywords: ["compare", "comparison"],
+    answer:
+      "Comparison is useful only when it reveals strategic gaps. Otherwise, it distorts focus."
+  },
+  {
+    keywords: ["doubt"],
+    answer:
+      "Doubt decreases as competence increases. Expand capability. Reduce internal uncertainty."
+  },
+  {
+    keywords: ["procrastinate"],
+    answer:
+      "Break tasks into defined units. Reduce psychological weight. Begin before feeling ready."
+  },
+  {
+    keywords: ["habit"],
+    answer:
+      "Attach new habits to existing routines. Lower friction. Track completion daily."
+  },
+  {
+    keywords: ["network"],
+    answer:
+      "Access follows value. Increase utility before seeking connections."
+  }
+];
+
+const defaultReplies = [
+  "Clarify the objective before acting.",
+  "Structure determines outcome.",
+  "Leverage changes scale.",
+  "Define constraints before deciding.",
+  "Optimize long-term positioning."
+];
+
+/* ============================= */
+/* ========= COMPONENT ========= */
+/* ============================= */
 
 export default function Home() {
   const [messages, setMessages] = useState([]);
@@ -51,6 +168,28 @@ export default function Home() {
     }, 20);
   };
 
+  const generateReply = (userInput) => {
+    const lowerInput = userInput.toLowerCase().trim();
+
+    if (["hi", "hello", "hey"].includes(lowerInput)) {
+      return greetingReplies[
+        Math.floor(Math.random() * greetingReplies.length)
+      ];
+    }
+
+    const found = knowledgeBase.find(item =>
+      item.keywords.some(keyword =>
+        lowerInput.includes(keyword)
+      )
+    );
+
+    if (found) return found.answer;
+
+    return defaultReplies[
+      Math.floor(Math.random() * defaultReplies.length)
+    ];
+  };
+
   const sendMessage = () => {
     if (!input || typing) return;
 
@@ -74,15 +213,18 @@ export default function Home() {
     const reply =
       count >= 5
         ? "Demo limit reached."
-        : responses[Math.floor(Math.random() * responses.length)];
+        : generateReply(input);
 
     typeWriter(reply);
     setCount(prev => prev + 1);
   };
 
+  /* ============================= */
+  /* ======== UI SECTION ========= */
+  /* ============================= */
+
   return (
     <div className="container">
-
       <div className="card">
 
         <div className="logoWrapper">
@@ -135,6 +277,7 @@ export default function Home() {
 
       </div>
 
+      {/* ===== STYLES (UNCHANGED) ===== */}
       <style jsx global>{`
         body { margin:0; }
 
@@ -157,7 +300,6 @@ export default function Home() {
           animation:float 6s ease-in-out infinite;
         }
 
-        /* LOGO FULL ANIMATION */
         .logoWrapper {
           width:100px;
           height:100px;
