@@ -49,7 +49,7 @@ export default function Home() {
 
       setCount(prev => prev + 1);
       setLoading(false);
-    }, 1200);
+    }, 1000);
   };
 
   return (
@@ -59,38 +59,37 @@ export default function Home() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        padding: "20px"
+        padding: "16px"
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "440px",
+          maxWidth: "460px",
           padding: "2px",
-          borderRadius: "30px",
+          borderRadius: "28px",
           background:
             "linear-gradient(145deg, rgba(255,255,255,0.15), rgba(0,0,0,0.6))",
-          animation: "borderGlow 6s infinite linear"
         }}
       >
         <div
           style={{
-            background: "rgba(0,0,0,0.9)",
+            background: "rgba(0,0,0,0.92)",
             backdropFilter: "blur(20px)",
-            borderRadius: "28px",
-            padding: "45px",
+            borderRadius: "26px",
+            padding: "clamp(28px, 6vw, 45px)",
             textAlign: "center",
             boxShadow: "0 0 80px rgba(0,0,0,0.9)",
             opacity: visible ? 1 : 0,
-            transform: visible ? "scale(1)" : "scale(0.95)",
+            transform: visible ? "scale(1)" : "scale(0.96)",
             transition: "all 0.8s ease"
           }}
         >
-          {/* Logo with Pulse */}
+          {/* Logo */}
           <div
             style={{
-              width: "110px",
-              height: "110px",
+              width: "clamp(90px, 25vw, 110px)",
+              height: "clamp(90px, 25vw, 110px)",
               margin: "0 auto 20px auto",
               borderRadius: "50%",
               position: "relative"
@@ -102,7 +101,7 @@ export default function Home() {
                 width: "100%",
                 height: "100%",
                 borderRadius: "50%",
-                border: "2px solid rgba(255,255,255,0.3)",
+                border: "2px solid rgba(255,255,255,0.25)",
                 animation: "pulse 3s infinite"
               }}
             />
@@ -118,10 +117,11 @@ export default function Home() {
             />
           </div>
 
+          {/* Title */}
           <h1
             style={{
-              fontSize: "22px",
-              letterSpacing: "5px",
+              fontSize: "clamp(24px, 6vw, 28px)",
+              letterSpacing: "4px",
               fontWeight: 300,
               marginBottom: "8px"
             }}
@@ -132,8 +132,8 @@ export default function Home() {
           <p
             style={{
               color: "#aaa",
-              fontSize: "13px",
-              marginBottom: "30px"
+              fontSize: "clamp(14px, 3.5vw, 15px)",
+              marginBottom: "28px"
             }}
           >
             Strategic intelligence powered by Treasure David
@@ -143,25 +143,31 @@ export default function Home() {
           <div
             style={{
               minHeight: "70px",
-              marginBottom: "25px",
-              fontSize: "14px",
+              marginBottom: "24px",
+              fontSize: "clamp(15px, 4vw, 16px)",
               lineHeight: "1.7",
               color: "#ddd"
             }}
           >
             {messages.map((msg, i) => (
-              <p key={i}>{msg}</p>
+              <p key={i} style={{ marginBottom: "10px" }}>
+                {msg}
+              </p>
             ))}
 
             {loading && (
-              <p style={{ color: "#888" }}>
-                Thinking<span className="dots">...</span>
-              </p>
+              <p style={{ color: "#888" }}>Thinking...</p>
             )}
           </div>
 
-          {/* Input */}
-          <div style={{ display: "flex", gap: "10px" }}>
+          {/* Input Area */}
+          <div
+            style={{
+              display: "flex",
+              gap: "10px",
+              flexDirection: "row"
+            }}
+          >
             <input
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -169,12 +175,12 @@ export default function Home() {
               placeholder="Speak with precision..."
               style={{
                 flex: 1,
-                padding: "13px",
+                padding: "14px",
                 background: "#0f0f0f",
                 border: "1px solid #1c1c1c",
                 borderRadius: "14px",
                 color: "#fff",
-                fontSize: "14px",
+                fontSize: "16px",
                 outline: "none"
               }}
             />
@@ -182,14 +188,13 @@ export default function Home() {
             <button
               onClick={sendMessage}
               style={{
-                padding: "13px 18px",
+                padding: "14px 18px",
                 background: "#ffffff",
                 color: "#000",
                 border: "none",
                 borderRadius: "14px",
                 cursor: "pointer",
-                fontWeight: 600,
-                transition: "0.3s"
+                fontWeight: 600
               }}
             >
               Send
@@ -198,18 +203,11 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Animations */}
       <style jsx global>{`
         @keyframes pulse {
-          0% { transform: scale(1); opacity: 0.7; }
-          50% { transform: scale(1.15); opacity: 0.2; }
-          100% { transform: scale(1); opacity: 0.7; }
-        }
-
-        @keyframes borderGlow {
-          0% { filter: brightness(1); }
-          50% { filter: brightness(1.2); }
-          100% { filter: brightness(1); }
+          0% { transform: scale(1); opacity: 0.6; }
+          50% { transform: scale(1.12); opacity: 0.2; }
+          100% { transform: scale(1); opacity: 0.6; }
         }
       `}</style>
     </div>
