@@ -53,157 +53,164 @@ export default function Home() {
   };
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        padding: "16px"
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "460px",
-          padding: "2px",
-          borderRadius: "28px",
-          background:
-            "linear-gradient(145deg, rgba(255,255,255,0.15), rgba(0,0,0,0.6))",
-        }}
-      >
-        <div
-          style={{
-            background: "rgba(0,0,0,0.92)",
-            backdropFilter: "blur(20px)",
-            borderRadius: "26px",
-            padding: "clamp(28px, 6vw, 45px)",
-            textAlign: "center",
-            boxShadow: "0 0 80px rgba(0,0,0,0.9)",
-            opacity: visible ? 1 : 0,
-            transform: visible ? "scale(1)" : "scale(0.96)",
-            transition: "all 0.8s ease"
-          }}
-        >
-          {/* Logo */}
-          <div
-            style={{
-              width: "clamp(90px, 25vw, 110px)",
-              height: "clamp(90px, 25vw, 110px)",
-              margin: "0 auto 20px auto",
-              borderRadius: "50%",
-              position: "relative"
-            }}
-          >
-            <div
-              style={{
-                position: "absolute",
-                width: "100%",
-                height: "100%",
-                borderRadius: "50%",
-                border: "2px solid rgba(255,255,255,0.25)",
-                animation: "pulse 3s infinite"
-              }}
-            />
-            <img
-              src="/logo.jpg"
-              alt="Treasure Logic"
-              style={{
-                width: "100%",
-                height: "100%",
-                borderRadius: "50%",
-                objectFit: "cover"
-              }}
-            />
-          </div>
+    <div className="container">
+      <div className={`card ${visible ? "visible" : ""}`}>
+        
+        <div className="logoWrapper">
+          <div className="pulseRing" />
+          <img src="/logo.jpg" alt="Treasure Logic" />
+        </div>
 
-          {/* Title */}
-          <h1
-            style={{
-              fontSize: "clamp(24px, 6vw, 28px)",
-              letterSpacing: "4px",
-              fontWeight: 300,
-              marginBottom: "8px"
-            }}
-          >
-            TREASURE LOGIC
-          </h1>
+        <h1>TREASURE LOGIC</h1>
+        <p className="subtitle">
+          Strategic intelligence powered by Treasure David
+        </p>
 
-          <p
-            style={{
-              color: "#aaa",
-              fontSize: "clamp(14px, 3.5vw, 15px)",
-              marginBottom: "28px"
-            }}
-          >
-            Strategic intelligence powered by Treasure David
-          </p>
+        <div className="messages">
+          {messages.map((msg, i) => (
+            <p key={i}>{msg}</p>
+          ))}
+          {loading && <p className="thinking">Thinking...</p>}
+        </div>
 
-          {/* Messages */}
-          <div
-            style={{
-              minHeight: "70px",
-              marginBottom: "24px",
-              fontSize: "clamp(15px, 4vw, 16px)",
-              lineHeight: "1.7",
-              color: "#ddd"
-            }}
-          >
-            {messages.map((msg, i) => (
-              <p key={i} style={{ marginBottom: "10px" }}>
-                {msg}
-              </p>
-            ))}
-
-            {loading && (
-              <p style={{ color: "#888" }}>Thinking...</p>
-            )}
-          </div>
-
-          {/* Input Area */}
-          <div
-            style={{
-              display: "flex",
-              gap: "10px",
-              flexDirection: "row"
-            }}
-          >
-            <input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && sendMessage()}
-              placeholder="Speak with precision..."
-              style={{
-                flex: 1,
-                padding: "14px",
-                background: "#0f0f0f",
-                border: "1px solid #1c1c1c",
-                borderRadius: "14px",
-                color: "#fff",
-                fontSize: "16px",
-                outline: "none"
-              }}
-            />
-
-            <button
-              onClick={sendMessage}
-              style={{
-                padding: "14px 18px",
-                background: "#ffffff",
-                color: "#000",
-                border: "none",
-                borderRadius: "14px",
-                cursor: "pointer",
-                fontWeight: 600
-              }}
-            >
-              Send
-            </button>
-          </div>
+        <div className="inputArea">
+          <input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && sendMessage()}
+            placeholder="Speak with precision..."
+          />
+          <button onClick={sendMessage}>Send</button>
         </div>
       </div>
 
       <style jsx global>{`
+        body {
+          margin: 0;
+        }
+
+        .container {
+          min-height: 100vh;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          padding: 16px;
+        }
+
+        .card {
+          width: 100%;
+          max-width: 460px;
+          background: rgba(0, 0, 0, 0.92);
+          backdrop-filter: blur(20px);
+          border-radius: 28px;
+          padding: clamp(28px, 6vw, 45px);
+          text-align: center;
+          box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+          opacity: 0;
+          transform: scale(0.96);
+          transition: all 0.8s ease;
+        }
+
+        .card.visible {
+          opacity: 1;
+          transform: scale(1);
+        }
+
+        .logoWrapper {
+          width: clamp(90px, 25vw, 110px);
+          height: clamp(90px, 25vw, 110px);
+          margin: 0 auto 20px auto;
+          border-radius: 50%;
+          position: relative;
+          transition: all 0.4s ease;
+          cursor: pointer;
+        }
+
+        .logoWrapper img {
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+
+        .pulseRing {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 2px solid rgba(255, 255, 255, 0.25);
+          animation: pulse 3s infinite;
+        }
+
+        .logoWrapper:hover {
+          transform: scale(1.12);
+          box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
+        }
+
+        .logoWrapper:hover .pulseRing {
+          border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        h1 {
+          font-size: clamp(24px, 6vw, 28px);
+          letter-spacing: 4px;
+          font-weight: 300;
+          margin-bottom: 8px;
+        }
+
+        .subtitle {
+          color: #aaa;
+          font-size: clamp(14px, 3.5vw, 15px);
+          margin-bottom: 28px;
+        }
+
+        .messages {
+          min-height: 70px;
+          margin-bottom: 24px;
+          font-size: clamp(15px, 4vw, 16px);
+          line-height: 1.7;
+          color: #ddd;
+        }
+
+        .messages p {
+          margin-bottom: 10px;
+        }
+
+        .thinking {
+          color: #888;
+        }
+
+        .inputArea {
+          display: flex;
+          gap: 10px;
+        }
+
+        .inputArea input {
+          flex: 1;
+          padding: 14px;
+          background: #0f0f0f;
+          border: 1px solid #1c1c1c;
+          border-radius: 14px;
+          color: #fff;
+          font-size: 16px;
+          outline: none;
+        }
+
+        .inputArea button {
+          padding: 14px 18px;
+          background: #ffffff;
+          color: #000;
+          border: none;
+          border-radius: 14px;
+          cursor: pointer;
+          font-weight: 600;
+          transition: 0.3s;
+        }
+
+        .inputArea button:hover {
+          transform: translateY(-2px);
+        }
+
         @keyframes pulse {
           0% { transform: scale(1); opacity: 0.6; }
           50% { transform: scale(1.12); opacity: 0.2; }
