@@ -17,19 +17,26 @@ export default function Home() {
   const [count, setCount] = useState(0);
   const [loading, setLoading] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     setTimeout(() => setVisible(true), 200);
+
+    const handleMouseMove = (e) => {
+      const x = (e.clientX / window.innerWidth) * 100;
+      const y = (e.clientY / window.innerHeight) * 100;
+      setMousePos({ x, y });
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
   }, []);
 
   const sendMessage = () => {
     if (!input || loading) return;
 
     if (count >= 5) {
-      setMessages(prev => [
-        ...prev,
-        "Treasure Logic: Demo limit reached."
-      ]);
+      setMessages(prev => [...prev, "Treasure Logic: Demo limit reached."]);
       return;
     }
 
@@ -53,9 +60,16 @@ export default function Home() {
   };
 
   return (
-    <div className="container">
+    <div
+      className="container"
+      style={{
+        background: `
+          radial-gradient(circle at ${mousePos.x}% ${mousePos.y}%, rgba(255,255,255,0.08), transparent 40%)
+        `
+      }}
+    >
       <div className={`card ${visible ? "visible" : ""}`}>
-        
+
         <div className="logoWrapper">
           <div className="pulseRing" />
           <img src="/logo.jpg" alt="Treasure Logic" />
@@ -95,20 +109,22 @@ export default function Home() {
           justify-content: center;
           align-items: center;
           padding: 16px;
+          transition: background 0.2s ease;
         }
 
         .card {
           width: 100%;
           max-width: 460px;
           background: rgba(0, 0, 0, 0.92);
-          backdrop-filter: blur(20px);
+          backdrop-filter: blur(25px);
           border-radius: 28px;
           padding: clamp(28px, 6vw, 45px);
           text-align: center;
-          box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+          box-shadow: 0 0 100px rgba(0, 0, 0, 0.9);
           opacity: 0;
           transform: scale(0.96);
           transition: all 0.8s ease;
+          animation: float 6s ease-in-out infinite;
         }
 
         .card.visible {
@@ -144,11 +160,7 @@ export default function Home() {
 
         .logoWrapper:hover {
           transform: scale(1.12);
-          box-shadow: 0 0 40px rgba(255, 255, 255, 0.4);
-        }
-
-        .logoWrapper:hover .pulseRing {
-          border-color: rgba(255, 255, 255, 0.6);
+          box-shadow: 0 0 60px rgba(255, 255, 255, 0.5);
         }
 
         h1 {
@@ -213,8 +225,14 @@ export default function Home() {
 
         @keyframes pulse {
           0% { transform: scale(1); opacity: 0.6; }
-          50% { transform: scale(1.12); opacity: 0.2; }
+          50% { transform: scale(1.15); opacity: 0.2; }
           100% { transform: scale(1); opacity: 0.6; }
+        }
+
+        @keyframes float {
+          0% { transform: translateY(0px); }
+          50% { transform: translateY(-6px); }
+          100% { transform: translateY(0px); }
         }
       `}</style>
     </div>
